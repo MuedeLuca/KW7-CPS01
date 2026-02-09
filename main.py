@@ -17,7 +17,7 @@ ACCEPTED_COINS = [0.05, 0.10, 0.20, 1.00, 2.00]
 
 resources = {
     "water_ml": 150,
-    "milk_ml": 150,
+    "milk_ml": 300,
     "coffee_g": 75,
     "money_eur": 35.50
 }
@@ -59,6 +59,87 @@ def ingredients_ok(drink_key: str) -> tuple[bool, list[str]]:
     if missing_ingredients:
         return False, missing_ingredients
     return True, []
+
+def payment_process(price: float) -> tuple[bool, float]:
+    """
+    Bezahlvorgang des Kaffeeautomats.
+    
+    Ablauf:
+    - Der Benutzer wirft Münzen
+    - Nach jeder Münze wird geprüft, ob der Preis erreicht ist.
+    - Ist noch zu wenig bezahlt, darf der Benutzer entscheiden, ob er
+      weiterzahlen oder abbrechen möchte.
+    - Bei Abbruch wird das gesamte eingeworfene Geld zurückgegeben.
+    
+    Rückgabwert:
+    - True -> Zahlung erfolgreich abgeschlossen
+    - False -> Zahlung abgebrochen
+    - Zweiter Wert: Insgesamt eingeworfener Geldbetrag
+    """
+    # Wie viel Geld hat der Benutzer, bisher eingeworfen:
+    inserted = 0.0
+    
+    # Anzeige des zu zahlenden Preises:
+    print(f"\nPreis: {euro_formater(price)}")
+    print("Bitte Münzen einwerfen.")
+    print(f"Erlaubte Münzen: {', '.join(euro_formater(c) for c in ACCEPTED_COINS)}")
+    
+    # Schleife bis genug bezahl wurde oder der Benutzer abbricht:
+    while True:
+        # Berechnung des noch offenen Betrags:
+        remaining = price - inserted
+        
+        # Solange nicht genug bezahlt, offenen Betrag anzeigen:
+        if remaining > 0:
+            print(f"Noch offen: {euro_formater(remaining)}")
+        
+        # Eingabe der Münzen:
+        coin_str = input("Münnze eingeben (z.B. 0.50) oder 'cancel': ").strip().lower()
+        
+        # Sonderfall: Benutzer bricht Bezahlvorgang ab:
+        if coin_str == "cancel":
+            print(f"Abbruch. Geld wird zurückgegeben: {euro_formater(inserted)}\n")
+            return False, inserted
+        
+        # Datentypkonvertierung und erlaubt Punk oder Komma als Dezimaltrenner:
+        try:
+            coin = float(coin_str. replace(",", "."))
+        except ValueError:
+            print("Ungültige Eingabe. Bitte eine Münze (z.B. 0.50) oder 'cancel' eingeben")
+            continue
+        
+        # Rundung auf zwei Nachkommastellen:
+        coin = round(coin, 2)
+        
+        # Prüfen, ob Münze akzeptiert wird:
+        if coin not in ACCEPTED_COINS:
+            print("Diese Münze wird nicht akzeptiert.")
+            continue
+        
+        # Eingeworfenen Geldbetrag erhöhen:
+        inserted = round(inserted + coin, 2)
+        
+        # Prüfen ob genug Geld eingeworfen wurde:
+        if inserted < price:
+            if not ask_yes_no("Noch nicht genug bezahlt. Weiterzahlen? (ja/nein): "):
+                # Benutzer möchte nicht weiterzahlen:
+                print(f"Geld wird zurückgegeben: {euro_formater(inserted)}\n")
+                return False, inserted
+        else:
+            return True, inserted
+        
+def ask_yes_no(prompt: str) -> bool:
+    """
+    Fragt den Benutzer nach ja/nein.
+    Gibt 'True' für ja zurück.
+    """
+    while True:
+        answer = input(prompt).strip().lower()
+        if answer in ("ja", "j", "yes", "y"):
+            return True
+        if answer in ("nein", "n", "no"):
+            return False
+        print("Bitte mit 'ja' oder 'nein' antworten.")
     
 # ---------------------
 # Hauptprogramm
@@ -88,7 +169,11 @@ def main():
     
         price = MENU[choice]["price"]
         print(f"\nDu hast gewählt: {choice.capitalize()}")
-        print(f"Zu bezahlen: {euro_formater(price)}")
+        print(f"Zu bezahlen: {euro_formater(price)}\n")
+        
+        paid, inserted = payment_process(price)
+        if not paid:
+            continue
 
 if __name__ == "__main__":
     main()
