@@ -169,6 +169,16 @@ def make_drink(drink_key: str) -> None:
     print("\nGetränk wird zubereitet...")
     print(f"{drink_key.capitalize()} ist fertig. ☕")
     print("Bitte entnehmen.\n")    
+
+def deduct_ingredients(drink_key: str) -> None:
+    """
+    Zieht die Zutaten für das gewählte Getränk ab.
+    """
+    needs = MENU[drink_key]["needs"]
+    
+    # Für jede Zutat die benötigt wird, ziehen wir die Menge von Ressourcen ab:
+    for ing, amount_needed in needs.items():
+        resources[ing] -= amount_needed # resources[ing] = resources[ing] - amount_needed
     
 #_______________________#
 #                       #
