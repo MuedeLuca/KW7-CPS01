@@ -22,9 +22,10 @@ resources = {
     "money_eur": 35.50
 }
 
-# ---------------------
-# Hilfsfunktionen
-# ---------------------
+#_______________________#
+#                       #
+#    Hilfsfunktionen    #
+#_______________________#
 def report() -> None:
     """Gibt den aktuellen Status des Automaten aus."""
     print("\n--- REPORT ---")
@@ -140,10 +141,31 @@ def ask_yes_no(prompt: str) -> bool:
         if answer in ("nein", "n", "no"):
             return False
         print("Bitte mit 'ja' oder 'nein' antworten.")
+        
+def handle_change_and_profit(price: float, inserted: float) -> float:
+    """
+    Berechnet das Wechselgeld und bucht die Einnahmen.
+    """
     
-# ---------------------
-# Hauptprogramm
-# ---------------------
+    # Wechselgeld:
+    change = round(inserted - price, 2)
+    
+    # Einnahmen verbuchen:
+    resources["money_eur"] = round(resources["money_eur"] + price, 2)
+    
+    # Ausgaben für den Benutzer:
+    if change > 0:
+        print(f"Wechselgeld notwendig: ja")
+        print(f"Rückgabe Wechselgeld: {euro_formater(change)}")
+    else:
+        print("Wechselgeld notwendig: Nein")
+    return change
+    
+    
+#_______________________#
+#                       #
+#     Hauptprogramm     #
+#_______________________#
 def main():
     while True:
         print("=== Kaffeeautomat ===")
@@ -174,6 +196,8 @@ def main():
         paid, inserted = payment_process(price)
         if not paid:
             continue
+        
+        handle_change_and_profit(price, inserted)
 
 if __name__ == "__main__":
     main()

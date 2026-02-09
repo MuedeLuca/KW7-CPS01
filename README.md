@@ -5,12 +5,12 @@
 - Falsche oder ungültige Eingaben abgreifen
 
 ## Ausschalten des Automats
-- Zum Ausschalten ein Geheimwort `off`
-- Wartungspersonal hat extra Befehle mit Passwort
+- Zum Ausschalten der Befehl `off`
+- Das Wartungspersonal hat extra Befehle mit Passwort
 
 ## Statusbericht
 - Mit `report` geben wir einen Statusbericht aus
-- Zeigt Ressourcen:
+- Angezeigte Ressourcen (Beispiel):
   ```
     Water: 150ml
     Milk: 50ml
@@ -20,11 +20,11 @@
 
 ## Zustandsprüfung
 - Sind Zutaten vorhanden?
-- Benutzerfreundliche MEldung ausgeben, falls Zutaten nicht vorhanden
+- Benutzerfreundliche Meldung ausgeben, falls Zutaten nicht vorhanden
 
 ## Bezahlvorgang
 - Vorher Zutaten prüfen
-- Nur Münzen erlaubt: `0,05€ | 0,10€ | 0,20€...`
+- Nur Münzen erlaubt: `5ct | 10ct | 20ct...`
 - Annahme: Der Automat hat unendlich viel Rückgeld
 - Prüfen ob echtes Geld
 - Benutzer kann jederzeit Bezahlvorgang abbrechen
@@ -39,7 +39,7 @@
   - 50 ml Wasser
   - 100 ml Milch
 
-## Geheime Wartungsbefehle
+## Wartungsbefehle
 - `Fill milk`: Milchvorrat zurücksetzen
 - `Fill water`
 - `Take money`
