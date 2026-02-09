@@ -216,6 +216,8 @@ def main():
             continue
         
         handle_change_and_profit(price, inserted)
+        make_drink(choice)
+        deduct_ingredients(choice)
 
 if __name__ == "__main__":
     main()
