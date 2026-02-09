@@ -161,6 +161,14 @@ def handle_change_and_profit(price: float, inserted: float) -> float:
         print("Wechselgeld notwendig: Nein")
     return change
     
+def make_drink(drink_key: str) -> None:
+    """
+    Simuliert die Zubereitung des Getränks.
+    """
+    
+    print("\nGetränk wird zubereitet...")
+    print(f"{drink_key.capitalize()} ist fertig. ☕")
+    print("Bitte entnehmen.\n")    
     
 #_______________________#
 #                       #
