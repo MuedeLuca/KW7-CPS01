@@ -45,7 +45,7 @@
 - `Take money`
  
  # Flowchart für die Anwendung
- <img src="..\..\images\Kaffeeautomat_flowchart.png" alt="Flowchart Kaffeeautomat" width=60%>
+ <img src="\images\Kaffeeautomat_flowchart.png" alt="Flowchart Kaffeeautomat" width=60%>
 
 # Allgemeines zu CPS
-  <img src="..\..\images\CPS.png" alt="CPS" width=60%>
+  <img src="\images\CPS.png" alt="CPS" width=60%>
